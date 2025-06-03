@@ -3,8 +3,6 @@ package org.example.authmicroservice.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +37,7 @@ public class JwtUtils {
 
     public String getUserNameFromJwtToken(String token) {
         // Use parseClaimsJws to ensure signature verification when retrieving claims
-        return Jwts.parserBuilder() // Recommended way for newer JJWT versions
+        return Jwts.parser() // Recommended way for newer JJWT versions
                 .setSigningKey(key())
                 .build()
                 .parseClaimsJws(token) // This method validates the signature
@@ -49,7 +47,7 @@ public class JwtUtils {
     public boolean validateJwtToken(String authToken) {
         try {
             // THE CRITICAL FIX: Use parseClaimsJws() to validate the signature
-            Jwts.parserBuilder() // Recommended way for newer JJWT versions
+            Jwts.parser() // Recommended way for newer JJWT versions
                     .setSigningKey(key())
                     .build()
                     .parseClaimsJws(authToken); // This line is crucial for validation
